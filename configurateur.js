@@ -1,26 +1,32 @@
-var configurateur = 
+var run = function() 
 {
-    run: function() 
-	{
-		if(Memory.mySpanws==null)
-		{
-			var spawn = null;
-			for(var x in Game.spawns)
-			{
-				spawn = Game.spawns[x];
-				console.log(spawn);
-				/*if(Memory.mySpawns.spawn==undefined)
-				{
-					addSpawn(spawn);
-				}*/
-			}
-		}
-	}
+	var mySpawn = null;
+	var myRoom = null;
 	
-	addSpawn: function(spawn)
+	if(Memory.mySpawns==null)
 	{
-		Memory.mySpawn = spawn;
+		for(var x in Game.spawns)
+		{
+			myRoom = Game.spawns[x].room.name;
+			mySpawn = x;
+			Memory.mySpawns = new Array(myRoom);
+			Memory.mySpawns.myRoom = new Array();
+			addSpawn(myRoom, mySpawn);
+		}
 	}
 };
 
-module.exports = configurateur;
+// Ajoute un spawn dans Memory.mySpawn.NOM_SALLE
+// myRoom : Nom de la salle du spawn
+// mySpawn : Nom du spawn
+
+var addSpawn = function(myRoom, mySpawn)
+{
+	return Memory.mySpawns.myRoom.push(mySpawn);
+};
+
+module.exports = 
+{
+    run: run,
+	addSpawn: addSpawn
+};
