@@ -1,3 +1,12 @@
+// Ajoute un spawn dans Memory.mySpawn.NOM_SALLE
+// myRoom : Nom de la salle du spawn
+// mySpawn : Nom du spawn
+
+var addSpawn = function(myRoom, mySpawn)
+{
+	return Memory.mySpawns.myRoom.push(mySpawn);
+};
+
 var run = function() 
 {
 	var mySpawn = null;
@@ -9,20 +18,11 @@ var run = function()
 		{
 			myRoom = Game.spawns[x].room.name;
 			mySpawn = x;
-			Memory.mySpawns = new Array(myRoom);
+			Memory.mySpawns = {};
 			Memory.mySpawns.myRoom = new Array();
 			addSpawn(myRoom, mySpawn);
 		}
 	}
-};
-
-// Ajoute un spawn dans Memory.mySpawn.NOM_SALLE
-// myRoom : Nom de la salle du spawn
-// mySpawn : Nom du spawn
-
-var addSpawn = function(myRoom, mySpawn)
-{
-	return Memory.mySpawns.myRoom.push(mySpawn);
 };
 
 module.exports = 

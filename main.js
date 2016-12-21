@@ -1,5 +1,8 @@
-
-Memory.mySpawns = null;
+//console.log("start");
+if(Memory.mySpawns == undefined)
+{
+    Memory.mySpawns = null;
+}
 
 
 var configurateur = require('configurateur');
@@ -8,8 +11,6 @@ var configurateur = require('configurateur');
 
 module.exports.loop = function () 
 {
-	console.log(Game.time);
-	console.log(Memory);
 	if(Memory.mySpawns==null)
 	{
 		configurateur.run();
