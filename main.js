@@ -11,7 +11,7 @@ if(Memory.myRooms == undefined)
 		Memory.unitsMax[Memory.roles[i]] = new Array();
 	}
 	
-	Memory.unitsMax.recolteur[1] = 3;
+	Memory.unitsMax.recolteur[1] = 4;
 	Memory.unitsMax.recolteur[2] = 3;
 	Memory.unitsMax.recolteur[3] = 2;
 	Memory.unitsMax.recolteur[4] = 2;
@@ -20,7 +20,7 @@ if(Memory.myRooms == undefined)
 	Memory.unitsMax.recolteur[7] = 2;
 	Memory.unitsMax.recolteur[8] = 2;
 	
-	Memory.unitsMax.ameliorateur[1] = 3;
+	Memory.unitsMax.ameliorateur[1] = 4;
 	Memory.unitsMax.ameliorateur[2] = 3;
 	Memory.unitsMax.ameliorateur[3] = 2;
 	Memory.unitsMax.ameliorateur[4] = 2;
