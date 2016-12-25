@@ -41,7 +41,6 @@ var run = function(creep)
 			break;
 		}
 	}
-	
 	switch(creep.memory.role)
 	{
 		case "recolteur":
@@ -50,41 +49,54 @@ var run = function(creep)
 		case "ameliorateur":
 			roleAmeliorateur(creep, creep.memory.working);
 		break;
+		case "constructeur":
+			roleConstructeur(creep, creep.memory.working);
+		break;
 	}
 };
 
 var roleRecolteur = function(creep, working)
 {
 	var targetsCol = null;
-	if(working)
+	
+	targetsCol = creep.pos.findClosestByRange(FIND_STRUCTURES, 
+	{
+			filter: (structure) => 
+			{
+				return (structure.structureType == STRUCTURE_CONTAINER && _.sum(structure.store) < structure.storeCapacity);
+			}
+	});
+	if(targetsCol!=undefined)
+	{
+		var target = targetsCol;
+	}
+	else
+	{
+		var roomName = creep.room.name;
+		target = Game.spawns[Memory.myRooms[roomName].spawn];
+	}
+	
+	if(!working)
 	{
 		var target = Game.getObjectById(creep.memory.source);
-		if(creep.harvest(source) == ERR_NOT_IN_RANGE) 
+		var harv = creep.harvest(target);
+		if(harv == ERR_NOT_IN_RANGE) 
 		{
-			creep.moveTo(target, {reusePath: 100});
+			creep.moveTo(target);
+		}
+		else
+		{
+			if(harv == OK)
+			{
+				creep.transfer(target, RESOURCE_ENERGY);
+			}
 		}
 	}
 	else
 	{
-		targetsCol = creep.pos.findClosestByRange(FIND_STRUCTURES, 
-		{
-				filter: (structure) => 
-				{
-					return (structure.structureType == STRUCTURE_CONTAINER && _.sum(structure.store) < structure.storeCapacity);
-				}
-		});
-		if(targetsCol!=undefined)
-		{
-			var target = targetsCol;
-		}
-		else
-		{
-			var roomName = creep.room.name;
-			target = Game.spawns[Memory.myRooms[roomName].spawn];
-		}
 		if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 
 		{
-			creep.moveTo(target, {reusePath: 100});
+			creep.moveTo(target);
 		}
 	}
 };
@@ -97,7 +109,7 @@ var roleAmeliorateur = function(creep, working)
 		target = creep.room.controller;
 		if(creep.upgradeController(target) == ERR_NOT_IN_RANGE) 
 		{
-			creep.moveTo(target, {reusePath: 100});
+			creep.moveTo(target);
 		}
 	}
 	else
@@ -111,7 +123,34 @@ var roleAmeliorateur = function(creep, working)
 		});
 		if(creep.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 
 		{
-			creep.moveTo(target, {reusePath: 100});
+			creep.moveTo(target);
+		}
+	}
+};
+
+var roleConstructeur = function(creep, working)
+{
+	var target = null;
+	if(working)
+	{
+		target = creep.room.find(FIND_CONSTRUCTION_SITES);
+		if(creep.build(target) == ERR_NOT_IN_RANGE) 
+		{
+			creep.moveTo(target);
+		}
+	}
+	else
+	{
+		target = creep.pos.findClosestByRange(FIND_STRUCTURES, 
+		{
+				filter: (structure) => 
+				{
+					return ((structure.structureType == STRUCTURE_CONTAINER && _.sum(structure.store) < structure.storeCapacity) || structure.structureType == STRUCTURE_SPAWN);
+				}
+		});
+		if(creep.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 
+		{
+			creep.moveTo(target);
 		}
 	}
 };
@@ -120,5 +159,6 @@ module.exports =
 {
     run: run,
 	roleRecolteur: roleRecolteur,
-	roleAmeliorateur: roleAmeliorateur
+	roleAmeliorateur: roleAmeliorateur,
+	roleConstructeur: roleConstructeur
 };
