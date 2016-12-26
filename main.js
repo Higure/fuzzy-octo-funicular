@@ -118,7 +118,7 @@ module.exports.loop = function()
 					Memory.myRooms[r].sources[creep.memory.source]++;
 				}
 				constructions = Game.spawns[Memory.myRooms[r].spawn].room.find(FIND_CONSTRUCTION_SITES);
-				if(constructions.length>0) 
+				if(constructions.length>0 && pop.constructeur==0) 
 				{
 					pop.constructeur = -1;
 				}
